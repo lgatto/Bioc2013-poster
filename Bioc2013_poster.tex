@@ -1,0 +1,231 @@
+\documentclass[final]{beamer} 
+
+\mode<presentation> {  %% check http://www-i6.informatik.rwth-aachen.de/~dreuw/latexbeamerposter.php for examples
+  %% \usetheme{CCP}
+}
+
+\boldmath
+\usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                        % e.g. for DIN-A0 poster
+%\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+%\usepackage[size=custom,width=200,height=120,scale=2,debug]{beamerposter}                     % e.g. for custom size poster
+%\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+% ...
+%
+\usepackage{ragged2e} 
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath,amsthm, amssymb, latexsym}
+\usefonttheme[onlymath]{serif}
+
+\newcommand{\E}{\mathsf{E}}
+\newcommand{\VAR}{\mathsf{VAR}}
+\newcommand{\COV}{\mathsf{COV}}
+\newcommand{\Prob}{\mathsf{P}}
+
+\newcommand{\R}{\texttt{R} }
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\texttt{#1}}}}
+\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+
+%% colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\usepackage{hyperref}
+\usepackage{breakurl}
+\hypersetup{%
+  pdfauthor={Laurent Gatto},%
+  pdfusetitle,
+  bookmarks = {true},
+  bookmarksnumbered = {true},
+  bookmarksopen = {true},
+  bookmarksopenlevel = 2,
+  unicode = {true},
+  breaklinks = {false},
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+
+
+%% figure numering
+\usecaptiontemplate{ 
+  \small 
+  \structure{\insertcaptionname~\insertcaptionnumber:} 
+  \insertcaption 
+} 
+
+\title[RforProteomics]{\huge Using \R and Bioconductor for proteomics data analysis}
+
+\author[Gatto et al.]{\large L. Gatto$^{*, 1}$, L.M. Breckels$^1$, S. Gibb$^2$, A. Christoforou$^1$ and K. S. Lilley$^1$}
+
+\institute[CCP]{
+  \begin{small}
+    $^1$Cambridge Centre for Proteomics, Department of Biochemistry, University of Cambridge, UK \\
+    $^2$Institut für Medizinische Informatik, Statistik und Epidemiologie, Universität Leipzig, Germany \\
+    \bigskip
+    $^{*}$\url{lg390@cam.ac.uk} -- \url{http://www.bio.cam.ac.uk/proteomics/}
+  \end{small}
+}
+
+\date[Bioc2013]{Bioconductor Meeting, 18 -- 19 July 2013}
+\date[]{}
+
+\begin{document}
+
+\begin{frame}{}
+  \maketitle
+  \vfill   
+
+  \begin{columns}
+    \begin{column}{.48\textwidth}
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %% first column %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     \begin{block}{Introduction}
+       \justifying 
+
+
+       \R and Bioconductor have had a tremendous impact on the quality of genomics data analysis \cite{Gentleman2004}. 
+       The members of the project have demonstrated that if life scientists wanted to extract 
+       relevant information from expensive data, it was absolutely necessary to value data analysis 
+       by investing the required time and energy. Nowadays, the Bioconductor user base comprises 
+       a variety of users, including non-bioinformaticians that are have overcome the initial hurdle 
+       of the command-line interfaces and non-trivial data analysis to explore and comprehend 
+       high-throughput data.
+       
+       \bigskip
+
+       Even well-known and respected leader in proteomics agree that it lies 10 years behind genomics. 
+       There are several valid reasons for this, including the chemical complexity of proteins, 
+       the technical complexity of the instrumentation and the vast possiblilties in the study of proteins. 
+       An often overseen albeit essential component of this failure is the quality of the scientific software 
+       that is used and valued inside the community. 
+       Computational proteomics researcher, who value quality software, comprehensive data analysis and 
+       reproducible research ought to demonstrate that better results can be 
+       achieved with better tools to invite the proteomics community to embrace quality, open-source and 
+       fexible tools. Here, we illustrate some examples of proteomics data analysis in \R.
+     \end{block}
+
+     \begin{block}{Working with raw data}
+       \justifying 
+       The proteomics community has developed a range of data standards and formats to overcome the shortcomings 
+       or closed, binary vendor-specific formats. One of the main projects that implement parsers for the XML-based 
+       open formats is the \texttt{C++} proteowizard project \cite{Chambers2012}, which is interfaced by the \Rpackage{mzR}
+       Bioconductor package.
+     \end{block}
+
+     \begin{block}{MS$^2$ labeled quantitation}
+       \justifying 
+     \end{block}
+
+     %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     \begin{columns}
+       \begin{column}{.15\textwidth}
+         \includegraphics[width=\linewidth]{./figures/PRIME-XS_Logo}
+       \end{column}
+       \begin{column}{.85\textwidth}
+         \small This work has been supported by the PRIME-XS project, grant agreement number 262067, 
+         funded by the European Union 7$^{th}$ Framework Program.
+       \end{column}
+     \end{columns}
+    \end{column}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% second column %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{column}{.48\textwidth}
+      %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \begin{block}{Label-free quantitation}
+        \justifying 
+      \end{block}
+      \vfill
+      \begin{block}{MS$^e$ data independent acquisition}
+        \justifying 
+      \end{block}
+      \vfill
+      \begin{block}{Peptide identification}
+        \justifying 
+      \end{block}
+      \vfill
+      %% figures  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \begin{figure}[h]
+        \centering
+        \includegraphics[width=.65\linewidth]{./figures/uc-pantone}
+        \caption{A figure.}
+        \label{fig:afigure}
+      \end{figure}
+      \vfill
+      %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \begin{block}{Conclusions and perspectives}
+       \justifying 
+
+       The felxibility of the \R environment and the breath of available packages is sometimes 
+       daunting for newcomers and introductionary points of entry are welcome.  
+       The \Rpackage{RforProteomics} package \cite{r4p} [\url{https://github.com/lgatto/RforProteomics}]
+       %% (and the proteomics workflow on the Bioconductor homepage) 
+       ought to assume such roles. For this, \Rpackage{RforProteomics} should be a collaborative project 
+       and contribution through the github repository are encouraged. 
+       
+
+       \bigskip
+
+       Future challenges...
+
+       \bigskip
+
+        Despite well known advantages in terms of statistical analyses of data and some 
+        unique software for proteomics and mass-spectrometry data analysis, 
+        there remains a lot of efforts and work to be done for \texttt{R}/Bioc to become a 
+        complete framework for proteomics data processing. These efforts should be 
+        tackled by a group of developers. It is our hope that the \Rpackage{RforProteomics}
+        will be a helpful targetted introduction to new users and motivate collaborative 
+        development of package developers.
+      \end{block}
+      \vfill
+      \begin{block}{References}
+        \justifying
+        \tiny
+        \begin{thebibliography}{9}
+
+        \bibitem{Gentleman2004}
+          Gentleman \textit{et al.}
+          \emph{Bioconductor: open software development for computational biology and bioinformatics}. 
+          Genome Biol. 2004 %% ;5(10):R80. Epub 2004 Sep 15. 
+          PMID: 15461798.          
+          
+        \bibitem{Chambers2012}
+          Chambers \textit{et al.}
+          \emph{A cross-platform toolkit for mass spectrometry and proteomics}. 
+          Nat Biotechnol. 2012 %% Oct;30(10):918-20. doi: 10.1038/nbt.2377. 
+          PMID: 23051804.
+          
+        \bibitem{r4p}
+          Gatto L, Christoforou A. 
+          \emph{Using R and Bioconductor for proteomics data analysis}. 
+          Biochim Biophys Acta. 2013 %% May 18. doi:pii: S1570-9639(13)00186-6.10.1016/j.bbapap.2013.04.032. 
+          PMID: 23692960.
+          
+        \end{thebibliography}
+        
+      \end{block}
+
+      %% \vspace{2mm}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+
+\end{document}
+
