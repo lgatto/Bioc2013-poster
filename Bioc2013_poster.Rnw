@@ -100,6 +100,9 @@ options(replace.assign = TRUE,
         width = 55)
 
 suppressPackageStartupMessages(library("RforProteomics"))
+suppressPackageStartupMessages(library("foreach"))
+suppressPackageStartupMessages(library("doMC"))
+suppressPackageStartupMessages(library("iterators"))
 suppressPackageStartupMessages(library("MSnbase"))
 suppressPackageStartupMessages(library("mzR"))
 suppressPackageStartupMessages(library("msdata"))
@@ -119,26 +122,21 @@ set.seed(1)
      \begin{block}{Introduction}
        \justifying 
 
-       \R and Bioconductor have had a tremendous impact on the quality of genomics data analysis \cite{Gentleman2004}. 
-       The members of the project have demonstrated that if life scientists wanted to extract 
-       relevant information from expensive data, it was absolutely necessary to value data analysis 
-       by investing the required time and energy. Nowadays, the Bioconductor user base comprises 
-       a variety of users, including non-bioinformaticians that are have overcome the initial hurdle 
-       of the command-line interfaces and non-trivial data analysis to explore and comprehend 
-       high-throughput data.
+       \R and Bioconductor have had a tremendous impact on the quality of genomics data analysis \cite{Gentleman2004},
+       demonstrating that extraction of relevant and biologically meaningful information from high-throughput data, 
+       required investing time and effort in the exploration and analysis of the data.
        
        \bigskip
 
        Even well-known and respected leader in proteomics agree that it lies 10 years behind genomics. 
        There are several valid reasons for this, including the chemical complexity of proteins, 
-       the technical complexity of the instrumentation (in particular mass-spectrometers - MS) 
-       and the vast possiblilties in the study of proteins. 
-       An often overseen albeit essential component of this failure is the quality of the scientific software 
-       that is used and valued inside the community. 
-       Computational proteomics researcher, who value quality software, comprehensive data analysis and 
-       reproducible research ought to demonstrate that better results can be 
-       achieved with better tools to invite the proteomics community to embrace quality, open-source and 
-       fexible tools. Here, we illustrate some examples of proteomics data analysis in \R.
+       the technical complexity of the instrumentation (in particular mass-spectrometry - MS) 
+       and the vast possibilities in the study of proteins. 
+       An often overseen albeit essential component of this failure is arguably the software that is promoted inside the proteomics community. 
+       Computational proteomics researcher who value quality software, comprehensive data analysis and 
+       reproducible research ought to illustrate how more flexible and advanced tools can effectively be used 
+       and demonstrate their advantages.
+       Here, we illustrate some examples of proteomics data analysis in \R.
      \end{block}
 
      \begin{block}{Working with raw data}
@@ -151,8 +149,7 @@ set.seed(1)
 
 <<mzR>>=
 library("mzR")
-library("RforProteomics")
-fname <- getPXD000001mzXML()
+fname <- dir(system.file(package="MSnbase",dir="extdata"), full.name=TRUE, pattern="mzXML$")
 ms <- openMSfile(fname)
 @
 
@@ -165,12 +162,33 @@ individual spectra. \Rpackage{mzR} is used by a variety of other packages like
        \textbf{Challenges} Further improve support of raw MS data and develop the range of supported formats, 
        in particluar identification (\texttt{mzIdentML}) and quantitation (\texttt{mzQuantML}) formats. 
      \end{block}
+     \bigskip
 
-     \begin{block}{MS$^2$ labeled quantitation}
+
+     \begin{block}{Labelled quantitation}
        \justifying 
+       The same raw data file can be imported in a convenient higher level container and 
+       directly processed, plotted, quantified and normalised with the \Rpackage{MSnbase} software. 
+<<msnbase, cache=TRUE, warnings = FALSE>>=
+exp <- readMSData(fname, verbose = FALSE)
+set <- quantify(exp, method = "trap", reporters = iTRAQ4, verbose = FALSE, parallel = TRUE)
+head(exprs(set), n = 3)
+@        
+      \begin{figure}[h]
+<<plotspectrum, dev = 'pdf', fig.width = 12, fig.height = 5>>=
+plot(exp[["X3.1"]], full = TRUE, reporters = iTRAQ4)
+@         
+\caption{MS$^2$ spectrum of an iTRAQ 4-plex experiment showing the 4 isobaric reporter ions.}
+\label{fig:spectrum}
+      \end{figure}
+\textbf{Challenges} Altough labelled MS$^2$ quantitation is well supported with \Rpackage{MSnbase} 
+and \Rpackage{isobar}, metabolic labelling techniques like N$^{15}$ or SILAC still need to be developed. 
      \end{block}
 
+     \bigskip 
+
      %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     \vspace{3cm}
      \begin{columns}
        \begin{column}{.15\textwidth}
          \includegraphics[width=\linewidth]{./figures/PRIME-XS_Logo}
@@ -185,6 +203,7 @@ individual spectra. \Rpackage{mzR} is used by a variety of other packages like
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %% second column %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     \begin{column}{.48\textwidth}
       %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \begin{block}{Label-free quantitation}
@@ -200,12 +219,7 @@ individual spectra. \Rpackage{mzR} is used by a variety of other packages like
       \end{block}
       \vfill
       %% figures  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      \begin{figure}[h]
-        \centering
-        \includegraphics[width=.65\linewidth]{./figures/uc-pantone}
-        \caption{A figure.}
-        \label{fig:afigure}
-      \end{figure}
+
       \vfill
       %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \begin{block}{Conclusions and perspectives}
@@ -222,14 +236,14 @@ individual spectra. \Rpackage{mzR} is used by a variety of other packages like
 
         Despite well known advantages in terms of statistical analyses of data and some 
         unique software for proteomics and mass-spectrometry data analysis, 
-        there remains a lot of efforts and work to be done for \texttt{R}/Bioc to become a 
+        there remains a lot of efforts and work to be done for \texttt{R}/Bioconductor to become a 
         complete framework for proteomics data processing. These efforts should be 
         tackled by a group of developers. It is our hope that the \Rpackage{RforProteomics}
-        will be a helpful targetted introduction to new users and motivate collaborative 
+        will be a helpful targeted introduction to new users and motivate collaborative 
         development of package developers.
       \end{block}
       \vfill
-      \begin{block}{References}
+      \begin{block}{}
         \justifying
         \tiny
         
