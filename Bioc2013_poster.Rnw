@@ -1,3 +1,7 @@
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{RforProteomics poster}
+%\VignetteKeywords{bioinformatics, proteomics, mass spectrometry}
+
 \documentclass[final]{beamer} 
 
 \mode<presentation> {  %% check http://www-i6.informatik.rwth-aachen.de/~dreuw/latexbeamerposter.php for examples
@@ -72,7 +76,7 @@
 \institute[CCP]{
   \begin{small}
     $^1$Cambridge Centre for Proteomics, Department of Biochemistry, University of Cambridge, UK \\
-    $^2$Institut für Medizinische Informatik, Statistik und Epidemiologie, Universität Leipzig, Germany \\
+    $^2$Institut f\"ur Medizinische Informatik, Statistik und Epidemiologie, Universit\"at Leipzig, Germany \\
     \bigskip
     $^{*}$\url{lg390@cam.ac.uk} -- \url{http://www.bio.cam.ac.uk/proteomics/}
   \end{small}
@@ -83,7 +87,27 @@
 
 \begin{document}
 
-\begin{frame}{}
+<<env, include=FALSE, echo=FALSE, cache=FALSE>>=
+library("knitr")
+opts_chunk$set(fig.align = 'center', 
+               fig.show = 'hold', 
+               par = TRUE,
+               prompt = FALSE,
+               eval = TRUE,
+               stop_on_error = 1L,
+               comment = ':')
+options(replace.assign = TRUE, 
+        width = 55)
+
+suppressPackageStartupMessages(library("RforProteomics"))
+suppressPackageStartupMessages(library("MSnbase"))
+suppressPackageStartupMessages(library("mzR"))
+suppressPackageStartupMessages(library("msdata"))
+set.seed(1)
+@ 
+%%$
+
+\begin{frame}[fragile]
   \maketitle
   \vfill   
 
@@ -94,7 +118,6 @@
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
      \begin{block}{Introduction}
        \justifying 
-
 
        \R and Bioconductor have had a tremendous impact on the quality of genomics data analysis \cite{Gentleman2004}. 
        The members of the project have demonstrated that if life scientists wanted to extract 
@@ -108,7 +131,8 @@
 
        Even well-known and respected leader in proteomics agree that it lies 10 years behind genomics. 
        There are several valid reasons for this, including the chemical complexity of proteins, 
-       the technical complexity of the instrumentation and the vast possiblilties in the study of proteins. 
+       the technical complexity of the instrumentation (in particular mass-spectrometers - MS) 
+       and the vast possiblilties in the study of proteins. 
        An often overseen albeit essential component of this failure is the quality of the scientific software 
        that is used and valued inside the community. 
        Computational proteomics researcher, who value quality software, comprehensive data analysis and 
@@ -119,10 +143,27 @@
 
      \begin{block}{Working with raw data}
        \justifying 
-       The proteomics community has developed a range of data standards and formats to overcome the shortcomings 
+       The proteomics community has developed a range of data standards and formats for MS data 
+       (the latest being \texttt{mzML}) to overcome the shortcomings 
        or closed, binary vendor-specific formats. One of the main projects that implement parsers for the XML-based 
-       open formats is the \texttt{C++} proteowizard project \cite{Chambers2012}, which is interfaced by the \Rpackage{mzR}
-       Bioconductor package.
+       open formats is the \texttt{C++} proteowizard project \cite{Chambers2012}, which is interfaced by the 
+       \Rpackage{mzR} Bioconductor package using the \Rpackage{Rcpp} package.
+
+<<mzR>>=
+library("mzR")
+library("RforProteomics")
+fname <- getPXD000001mzXML()
+ms <- openMSfile(fname)
+@
+
+The resulting \Robject{ms} object is a file handle that allows fast direct and random access to the 
+individual spectra. \Rpackage{mzR} is used by a variety of other packages like 
+\Rpackage{xcms}, \Rpackage{MSnbase}, \Rpackage{RMassBank} and \Rpackage{TargetSearch}.
+
+       \bigskip
+
+       \textbf{Challenges} Further improve support of raw MS data and develop the range of supported formats, 
+       in particluar identification (\texttt{mzIdentML}) and quantitation (\texttt{mzQuantML}) formats. 
      \end{block}
 
      \begin{block}{MS$^2$ labeled quantitation}
@@ -177,11 +218,6 @@
        ought to assume such roles. For this, \Rpackage{RforProteomics} should be a collaborative project 
        and contribution through the github repository are encouraged. 
        
-
-       \bigskip
-
-       Future challenges...
-
        \bigskip
 
         Despite well known advantages in terms of statistical analyses of data and some 
@@ -196,6 +232,7 @@
       \begin{block}{References}
         \justifying
         \tiny
+        
         \begin{thebibliography}{9}
 
         \bibitem{Gentleman2004}
