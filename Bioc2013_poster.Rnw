@@ -136,7 +136,8 @@ set.seed(1)
        Computational proteomics researcher who value quality software, comprehensive data analysis and 
        reproducible research ought to illustrate how more flexible and advanced tools can effectively be used 
        and demonstrate their advantages.
-       Here, we illustrate some examples of proteomics data analysis in \R.
+       Here, we illustrate some examples of proteomics data analysis in \texttt{R}, in particular low level 
+       \textbf{raw MS data} manipulation, labeled and label-free \textbf{quantitation} and peptide \textbf{identification}.       
      \end{block}
 
      \begin{block}{Working with raw data}
@@ -164,25 +165,27 @@ individual spectra. \Rpackage{mzR} is used by a variety of other packages like
      \end{block}
      \bigskip
 
-
      \begin{block}{Labelled quantitation}
        \justifying 
        The same raw data file can be imported in a convenient higher level container and 
        directly processed, plotted, quantified and normalised with the \Rpackage{MSnbase} software. 
-<<msnbase, cache=TRUE, warnings = FALSE>>=
-exp <- readMSData(fname, verbose = FALSE)
-set <- quantify(exp, method = "trap", reporters = iTRAQ4, verbose = FALSE, parallel = TRUE)
-head(exprs(set), n = 3)
-@        
-      \begin{figure}[h]
+       \begin{figure}[h]
 <<plotspectrum, dev = 'pdf', fig.width = 12, fig.height = 5>>=
+exp <- readMSData(fname, verbose = FALSE)
 plot(exp[["X3.1"]], full = TRUE, reporters = iTRAQ4)
 @         
 \caption{MS$^2$ spectrum of an iTRAQ 4-plex experiment showing the 4 isobaric reporter ions.}
 \label{fig:spectrum}
-      \end{figure}
-\textbf{Challenges} Altough labelled MS$^2$ quantitation is well supported with \Rpackage{MSnbase} 
-and \Rpackage{isobar}, metabolic labelling techniques like N$^{15}$ or SILAC still need to be developed. 
+\end{figure}
+
+<<msnbase, cache=TRUE, warnings = FALSE>>=
+set <- quantify(exp, method = "trap", reporters = iTRAQ4, verbose = FALSE, parallel = TRUE)
+head(exprs(set), n = 3)
+@        
+
+     \textbf{Challenges} Altough labelled MS$^2$ quantitation is well supported with \Rpackage{MSnbase} 
+     and \Rpackage{isobar}, metabolic labelling techniques like N$^{15}$ or SILAC still need to be developed. 
+     
      \end{block}
 
      \bigskip 
