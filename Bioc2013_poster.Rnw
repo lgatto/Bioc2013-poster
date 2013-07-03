@@ -191,7 +191,7 @@ and \Rpackage{isobar}, metabolic labelling techniques like N$^{15}$ or SILAC sti
      \vspace{3cm}
      \begin{columns}
        \begin{column}{.15\textwidth}
-         \includegraphics[width=\linewidth]{./figures/PRIME-XS_Logo}
+         \includegraphics[width=\linewidth]{./figure/PRIME-XS_Logo}
        \end{column}
        \begin{column}{.85\textwidth}
          \small This work has been supported by the PRIME-XS project, grant agreement number 262067, 

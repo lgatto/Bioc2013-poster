@@ -38,6 +38,7 @@ poster: Bioc2013_poster.Rnw
 clean:	
 	rm -f $(LATEXFILES)
 	rm -f .Rhistory
+	rm Bioc2013_poster.tex
 	rm -f *~
 	rm -f */*~
 
