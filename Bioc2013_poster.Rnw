@@ -76,7 +76,7 @@
 \institute[CCP]{
   \begin{small}
     $^1$Cambridge Centre for Proteomics, Department of Biochemistry, University of Cambridge, UK \\
-    $^2$Institut f\"ur Medizinische Informatik, Statistik und Epidemiologie, Universit\"at Leipzig, Germany \\
+    $^2$Institute for Medical Informatics, Statistics and Epidemiology, University of Leipzig, Germany \\
     \bigskip
     $^{*}$\url{lg390@cam.ac.uk} -- \url{http://www.bio.cam.ac.uk/proteomics/}
   \end{small}
