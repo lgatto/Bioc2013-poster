@@ -8,6 +8,8 @@
   %% \usetheme{CCP}
 }
 
+\setbeamertemplate{bibliography item}[text]
+
 \boldmath
 \usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                        % e.g. for DIN-A0 poster
 %\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
@@ -20,6 +22,10 @@
 \usepackage[latin1]{inputenc}
 \usepackage{amsmath,amsthm, amssymb, latexsym}
 \usefonttheme[onlymath]{serif}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 
 \newcommand{\E}{\mathsf{E}}
 \newcommand{\VAR}{\mathsf{VAR}}
@@ -111,8 +117,9 @@ set.seed(1)
 %%$
 
 \begin{frame}[fragile]
+  \vspace{-100pt} 
+  
   \maketitle
-  \vfill   
 
   \begin{columns}
     \begin{column}{.48\textwidth}
@@ -128,7 +135,7 @@ set.seed(1)
        
        \bigskip
 
-       Even well-known and respected leader in proteomics agree that it lies 10 years behind genomics. 
+       Even well-known and respected leaders in proteomics agree that it lies 10 years behind genomics. 
        There are several valid reasons for this, including the chemical complexity of proteins, 
        the technical complexity of the instrumentation (in particular mass-spectrometry - MS) 
        and the vast possibilities in the study of proteins. 
@@ -137,7 +144,8 @@ set.seed(1)
        reproducible research ought to illustrate how more flexible and advanced tools can effectively be used 
        and demonstrate their advantages.
        Here, we illustrate some examples of proteomics data analysis in \texttt{R}, in particular low level 
-       \textbf{raw MS data} manipulation, labeled and label-free \textbf{quantitation} and peptide \textbf{identification}.       
+       \textbf{raw MS data} manipulation, labelled and label-free \textbf{quantitation} and peptide \textbf{identification},
+       taken from the \Rpackage{RforProteomics} package \cite{r4p}.
      \end{block}
 
      \begin{block}{Working with raw data}
@@ -161,46 +169,41 @@ individual spectra. \Rpackage{mzR} is used by a variety of other packages like
        \bigskip
 
        \textbf{Challenges} Further improve support of raw MS data and develop the range of supported formats, 
-       in particluar identification (\texttt{mzIdentML}) and quantitation (\texttt{mzQuantML}) formats. 
+       in particular identification (\texttt{mzIdentML}) and quantitation (\texttt{mzQuantML}) formats. 
      \end{block}
      \bigskip
-
+     
      \begin{block}{Labelled quantitation}
        \justifying 
        The same raw data file can be imported in a convenient higher level container and 
-       directly processed, plotted, quantified and normalised with the \Rpackage{MSnbase} software. 
-       \begin{figure}[h]
-<<plotspectrum, dev = 'pdf', fig.width = 12, fig.height = 5>>=
+       directly processed, plotted, quantified and normalised with the \Rpackage{MSnbase} \cite{msnbase} software.
+<<msnbase, eval = FALSE>>= 
 exp <- readMSData(fname, verbose = FALSE)
 plot(exp[["X3.1"]], full = TRUE, reporters = iTRAQ4)
-@         
-\caption{MS$^2$ spectrum of an iTRAQ 4-plex experiment showing the 4 isobaric reporter ions.}
-\label{fig:spectrum}
-\end{figure}
-
-<<msnbase, cache=TRUE, warnings = FALSE>>=
 set <- quantify(exp, method = "trap", reporters = iTRAQ4, verbose = FALSE, parallel = TRUE)
 head(exprs(set), n = 3)
-@        
+@         
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.55\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{./figure/plotspectrum.pdf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.44\linewidth}
+    \includegraphics[width=\linewidth]{./figure/spikes.pdf} \\
+    \includegraphics[width=\linewidth]{./figure/plotmzdelta.pdf}
+  \end{subfigure}
+  \label{fig:msnbase} 
+  \caption{MS$^2$ spectrum of an iTRAQ 4-plex experiment showing the 4 isobaric reporter ions, 
+    as produced by \Rfunction{plot} above (left). Peptides of interesting from a spiked-in experiment 
+    (top right) and distribution of the \textit{m/z} differences of all MS$^2$ spectra from the same 
+    experiment, use as a peptide-spectrum matching quality assessment (bottom right).}
+\end{figure}
 
-     \textbf{Challenges} Altough labelled MS$^2$ quantitation is well supported with \Rpackage{MSnbase} 
-     and \Rpackage{isobar}, metabolic labelling techniques like N$^{15}$ or SILAC still need to be developed. 
+     \textbf{Challenges} Although labelled MS$^2$ quantitation is well supported with \Rpackage{MSnbase} 
+     and \Rpackage{isobar}, metabolic labelling techniques like $^{15}$N or SILAC still need to be developed. 
      
      \end{block}
-
-     \bigskip 
-
-     %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     \vspace{3cm}
-     \begin{columns}
-       \begin{column}{.15\textwidth}
-         \includegraphics[width=\linewidth]{./figure/PRIME-XS_Logo}
-       \end{column}
-       \begin{column}{.85\textwidth}
-         \small This work has been supported by the PRIME-XS project, grant agreement number 262067, 
-         funded by the European Union 7$^{th}$ Framework Program.
-       \end{column}
-     \end{columns}
     \end{column}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -211,29 +214,58 @@ head(exprs(set), n = 3)
       %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \begin{block}{Label-free quantitation}
         \justifying 
+        Label-free quantitation is available in the \Rpackage{xcms} \cite{xcms} and \Rpackage{MALDIquant} \cite{maldiquant} packages. 
+        The latter provides a complete pipeline, including 
+        baseline subtraction, smoothing, peak detection and alignment using warping functions, 
+        handling of replicated measurements as well as allowing spectra with different resolutions.
+        \begin{figure}[h]
+          \includegraphics[width=\textwidth]{./figure/mqplot2.pdf}
+          \label{fig:mq}
+          \caption{Illustration of the \Rpackage{MALDIquant} pipeline.}
+        \end{figure}
+        
+        A complete pipeline for MS$^e$ data independent acquisition, including support for ion mobility separation 
+        is available in the \Rpackage{synapter} package \cite{synapter} that, among other, transfers identification between acquisitions 
+        to substantially reduce missing values. 
+        
+        \bigskip        
+        \textbf{Challenges} Application and benchmarking of label-free pipeline on popular Thermo Orbitrap instruments.        
       \end{block}
-      \vfill
-      \begin{block}{MS$^e$ data independent acquisition}
-        \justifying 
-      \end{block}
-      \vfill
+      %%\vfill
       \begin{block}{Peptide identification}
         \justifying 
-      \end{block}
-      \vfill
-      %% figures  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        The recently released \Rpackage{rTANDEM} package encapsulates the \texttt{X!Tandem} \cite{tandem}
+        search engine in \R and uses the same XML-based parameter files as the native application. Result 
+        files can be directly parsed and mined in \R.   
+<<rtandem, eval = FALSE, tidy = FALSE>>=
+xmlres <- rtandem(spectra.mgf, taxon = "yeast", 
+                  taxonomy = "taxonomy.xml", 
+                  default.parameters = "default-params.xml")
+res <- GetResultsFromXML(xmlres)
+proteins <- GetProteins(res)
+peptides <- GetPeptides(res)
+@       
+        A complete pipeline with support for identification is welcome at the cost of additional 
+        development and maintenance time for developers. With support for \texttt{mzIdentML} files, 
+        it will become possible to import identification data from most search engines, this 
+        facilitating the integration of \R based pipelines with existing tools.        
+        
+        \bigskip        
+        \textbf{Challenges} Better integration of identification and raw/quantitation data infrastructure.        
 
-      \vfill
+      \end{block}
+      %%\vfill
+
       %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \begin{block}{Conclusions and perspectives}
        \justifying 
 
-       The felxibility of the \R environment and the breath of available packages is sometimes 
-       daunting for newcomers and introductionary points of entry are welcome.  
-       The \Rpackage{RforProteomics} package \cite{r4p} [\url{https://github.com/lgatto/RforProteomics}]
+       The flexibility of the \R environment and the breath of available packages is sometimes 
+       daunting for newcomers and introductory points of entry are welcome.  
+       The \Rpackage{RforProteomics} package [\url{https://github.com/lgatto/RforProteomics}]
        %% (and the proteomics workflow on the Bioconductor homepage) 
-       ought to assume such roles. For this, \Rpackage{RforProteomics} should be a collaborative project 
-       and contribution through the github repository are encouraged. 
+       ought to assume such a role. For this, \Rpackage{RforProteomics} should be a collaborative project 
+       and contributions through the github repository are encouraged. 
        
        \bigskip
 
@@ -245,35 +277,68 @@ head(exprs(set), n = 3)
         will be a helpful targeted introduction to new users and motivate collaborative 
         development of package developers.
       \end{block}
-      \vfill
+      %%\vfill
       \begin{block}{}
         \justifying
         \tiny
         
-        \begin{thebibliography}{9}
+        \begin{thebibliography}{9}          
 
-        \bibitem{Gentleman2004}
-          Gentleman \textit{et al.}
-          \emph{Bioconductor: open software development for computational biology and bioinformatics}. 
-          Genome Biol. 2004 %% ;5(10):R80. Epub 2004 Sep 15. 
-          PMID: 15461798.          
-          
-        \bibitem{Chambers2012}
-          Chambers \textit{et al.}
+        \bibitem{synapter} Bond NJ \textit{et al.}
+          \emph{Improving Qualitative and Quantitative Performance for MS(E)-based Label-free Proteomics}. 
+          J Proteome Res. 2013 %% Jun 7;12(6):2340-53. doi: 10.1021/pr300776t. Epub 2013 Apr 17. 
+          PMID: 23510225.
+
+        \bibitem{Chambers2012} Chambers M. \textit{et al.}
           \emph{A cross-platform toolkit for mass spectrometry and proteomics}. 
           Nat Biotechnol. 2012 %% Oct;30(10):918-20. doi: 10.1038/nbt.2377. 
           PMID: 23051804.
           
-        \bibitem{r4p}
-          Gatto L, Christoforou A. 
+        \bibitem{tandem} Craig R and Beavis RC. 
+          \emph{TANDEM: matching proteins with tandem mass spectra}.
+          Bioinformatics. 2004 %% Jun 12;20(9):1466-7. Epub 2004 Feb 19. 
+          PMID: 14976030.                  
+                              
+        \bibitem{r4p} Gatto L and Christoforou A. 
           \emph{Using R and Bioconductor for proteomics data analysis}. 
           Biochim Biophys Acta. 2013 %% May 18. doi:pii: S1570-9639(13)00186-6.10.1016/j.bbapap.2013.04.032. 
           PMID: 23692960.
           
-        \end{thebibliography}
-        
-      \end{block}
+        \bibitem{msnbase} Gatto L and Lilley KS
+          \emph{MSnbase-an R/Bioconductor package for isobaric tagged mass spectrometry data visualization, processing and quantitation}.
+          Bioinformatics. 2012 %% Jan; 28:(2)288-9
+          PMID: 22113085.
 
+        \bibitem{Gentleman2004} Gentleman R. \textit{et al.}
+          \emph{Bioconductor: open software development for computational biology and bioinformatics}. 
+          Genome Biol. 2004 %% ;5(10):R80. Epub 2004 Sep 15. 
+          PMID: 15461798.          
+          
+        \bibitem{maldiquant} Gibb S and Strimmer K
+          \emph{MALDIquant: a versatile R package for the analysis of mass spectrometry data.}
+          Bioinformatics. 2012 %% Sep; 28:(17)2270-1           
+          PMID: 22796955.
+          
+        \bibitem{xcms} Smith CA \textit{et al.}
+          \emph{XCMS: Processing mass spectrometry data for metabolite profiling using nonlinear peak alignment, matching and identification}.
+          Analytical Chemistry 2006 %% 78:779-787          
+          PMID: 16448051.                                        
+            
+        \end{thebibliography}        
+      \end{block}
+      %% Funcing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \vspace{3cm}
+      \begin{columns}
+        \begin{column}{.15\textwidth}
+          \includegraphics[width=\linewidth]{./figure/PRIME-XS_Logo}
+        \end{column}
+        \begin{column}{.85\textwidth}
+          \small This work has been supported by the PRIME-XS project, grant agreement number 262067, 
+          funded by the European Union 7$^{th}$ Framework Program.
+        \end{column}
+      \end{columns}
+      %% Funding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      
       %% \vspace{2mm}
     \end{column}
   \end{columns}

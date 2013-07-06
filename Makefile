@@ -17,6 +17,8 @@ LATEXFILES = *.aux\
 	*.figlist\
 	*.dep\
 	*.dpth\
+	*-blx.bib\
+	*.run.xml\
 	*.makefile
 
 all: 
@@ -29,8 +31,6 @@ endif
 
 poster: Bioc2013_poster.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "knitr::knit2pdf('Bioc2013_poster.Rnw')"
-	## bibtex Bioc2013_poster
-	## pdflatex Bioc2013_poster.tex
 	pdflatex Bioc2013_poster.tex
 
 .PHONY: clean allclean 
@@ -38,7 +38,7 @@ poster: Bioc2013_poster.Rnw
 clean:	
 	rm -f $(LATEXFILES)
 	rm -f .Rhistory
-	rm Bioc2013_poster.tex
+	rm -f Bioc2013_poster.tex
 	rm -f *~
 	rm -f */*~
 
