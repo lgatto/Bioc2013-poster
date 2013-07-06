@@ -219,9 +219,17 @@ head(exprs(set), n = 3)
         baseline subtraction, smoothing, peak detection and alignment using warping functions, 
         handling of replicated measurements as well as allowing spectra with different resolutions.
         \begin{figure}[h]
+          %% please find the script to create this figure at
+          %% https://github.com/sgibb/MALDIquantExamples/blob/master/createFigure1_color.R
           \includegraphics[width=\textwidth]{./figure/mqplot2.pdf}
           \label{fig:mq}
-          \caption{Illustration of the \Rpackage{MALDIquant} pipeline.}
+          \caption{Illustration of the \Rpackage{MALDIquant} pipeline:
+            raw spectrum with estimate baseline (A);
+            variance-stabilized, smoothed, baseline-corrected spectrum with detected peaks (B);
+            fitted warping function for peak alignment (C); 
+            four unaligned peaks (D);
+            four aligned peaks (E); 
+            merged spectrum with discovered and labeled peaks (F).}
         \end{figure}
         
         A complete pipeline for MS$^e$ data independent acquisition, including support for ion mobility separation 
