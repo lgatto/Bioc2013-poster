@@ -311,7 +311,7 @@ peptides <- GetPeptides(res)
         \begin{thebibliography}{9}          
 
         \bibitem{synapter} Bond NJ \textit{et al.}
-          \emph{Improving Qualitative and Quantitative Performance for MS(E)-based Label-free Proteomics}. 
+          \emph{Improving Qualitative and Quantitative Performance for MS$^E$-based Label-free Proteomics}. 
           J Proteome Res. 2013 %% Jun 7;12(6):2340-53. doi: 10.1021/pr300776t. Epub 2013 Apr 17. 
           PMID: 23510225.
 
@@ -361,10 +361,7 @@ peptides <- GetPeptides(res)
         \end{column}
         \begin{column}{.85\textwidth}
           \small This work has been supported by the PRIME-XS project, grant agreement number 262067, 
-          funded by the European Union 7$^{th}$ Framework Program.
-
-          \bigskip
-
+          funded by the European Union 7$^{th}$ Framework Program. 
           S.G. received funding from the German National Academic Foundation.
         \end{column}
       \end{columns}
