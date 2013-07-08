@@ -31,6 +31,8 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
+\usepackage{tcolorbox}
+
 \newcommand{\E}{\mathsf{E}}
 \newcommand{\VAR}{\mathsf{VAR}}
 \newcommand{\COV}{\mathsf{COV}}
@@ -43,9 +45,18 @@
 \newcommand{\Rpackage}[1]{{\mbox{\texttt{#1}}}}
 \newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
 
+\newcommand{\challenge}[1]{
+       \begin{tcolorbox}[notitle,boxrule=0pt,colback=blue!10,colframe=blue!10]\textbf{Challenges}~{#1}
+       \end{tcolorbox}
+}
+
+
 %% colors
 \definecolor{Red}{rgb}{0.7,0,0}
 \definecolor{Blue}{rgb}{0,0,0.8}
+
+
+\usepackage[bordercolor=white, backgroundcolor=gray!20]{todonotes}
 
 \usepackage{hyperref}
 \usepackage{breakurl}
@@ -170,9 +181,10 @@ individual spectra. \Rpackage{mzR} is used by a variety of other packages like
 \Rpackage{xcms}, \Rpackage{MSnbase}, \Rpackage{RMassBank} and \Rpackage{TargetSearch}.
 
        \bigskip
+       
+         \challenge{Further improve support of raw MS data and develop the range of supported formats, 
+         in particular identification (\texttt{mzIdentML}) and quantitation (\texttt{mzQuantML}) formats.}
 
-       \textbf{Challenges} Further improve support of raw MS data and develop the range of supported formats, 
-       in particular identification (\texttt{mzIdentML}) and quantitation (\texttt{mzQuantML}) formats. 
      \end{block}
      \bigskip
      
@@ -203,8 +215,8 @@ head(exprs(set), n = 3)
     experiment, use as a peptide-spectrum matching quality assessment (bottom right).}
 \end{figure}
 
-     \textbf{Challenges} Although labelled MS$^2$ quantitation is well supported with \Rpackage{MSnbase} 
-     and \Rpackage{isobar}, metabolic labelling techniques like $^{15}$N or SILAC still need to be developed. 
+     \challenge{Although labelled MS$^2$ quantitation is well supported with \Rpackage{MSnbase} 
+     and \Rpackage{isobar}, metabolic labelling techniques like $^{15}$N or SILAC still need to be developed.}
      
      \end{block}
      \vfill
@@ -241,7 +253,7 @@ head(exprs(set), n = 3)
         to substantially reduce missing values. 
         
         \bigskip        
-        \textbf{Challenges} Application and benchmarking of label-free pipeline on popular Thermo Orbitrap instruments.        
+        \challenge{Application and benchmarking of label-free pipeline on popular Thermo Orbitrap instruments.}
       \end{block}
       %%\vfill
       \begin{block}{Peptide identification}
@@ -265,7 +277,7 @@ peptides <- GetPeptides(res)
         facilitating the integration of \R based pipelines with existing tools.        
         
         \bigskip        
-        \textbf{Challenges} Better integration of identification and raw/quantitation data infrastructures.
+        \challenge{Better integration of identification and raw/quantitation data infrastructures.}
 
       \end{block}
       %%\vfill
