@@ -155,7 +155,7 @@ set.seed(1)
        \justifying 
        The proteomics community has developed a range of data standards and formats for MS data 
        (the latest being \texttt{mzML}) to overcome the shortcomings 
-       or closed, binary vendor-specific formats. One of the main projects that implement parsers for the XML-based 
+       of closed, binary vendor-specific formats. One of the main projects that implement parsers for the XML-based 
        open formats is the \texttt{C++} proteowizard project \cite{Chambers2012}, which is interfaced by the 
        \Rpackage{mzR} Bioconductor package using the \Rpackage{Rcpp} package.
 
