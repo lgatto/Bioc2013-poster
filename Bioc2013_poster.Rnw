@@ -130,7 +130,7 @@ set.seed(1)
 
        \R and Bioconductor have had a tremendous impact on the quality of genomics data analysis \cite{Gentleman2004},
        demonstrating that extraction of relevant and biologically meaningful information from high-throughput data, 
-       required investing time and effort in the exploration and analysis of the data.
+       requires investing time and effort in the exploration and analysis of the data.
        
        \bigskip
 
@@ -139,7 +139,7 @@ set.seed(1)
        the technical complexity of the instrumentation (in particular mass-spectrometry - MS) 
        and the vast possibilities in the study of proteins. 
        An often overseen albeit essential component of this failure is arguably the software that is promoted inside the proteomics community. 
-       Computational proteomics researcher who value quality software, comprehensive data analysis and 
+       Computational proteomics researchers who value quality software, comprehensive data analysis and 
        reproducible research ought to illustrate how more flexible and advanced tools can effectively be used 
        and demonstrate their advantages.
        Here, we illustrate some examples of proteomics data analysis in \texttt{R}, in particular low level 
