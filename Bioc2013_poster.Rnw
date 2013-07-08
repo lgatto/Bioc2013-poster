@@ -339,13 +339,17 @@ peptides <- GetPeptides(res)
       
       %% Funding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       %% \vspace{3cm}
-      \begin{columns}
+      \begin{columns}[T]
         \begin{column}{.15\textwidth}
           \includegraphics[width=\linewidth]{./figure/PRIME-XS_Logo}
         \end{column}
         \begin{column}{.85\textwidth}
           \small This work has been supported by the PRIME-XS project, grant agreement number 262067, 
           funded by the European Union 7$^{th}$ Framework Program.
+
+          \bigskip
+
+          S.G. received funding from the German National Academic Foundation.
         \end{column}
       \end{columns}
       %% Funding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
