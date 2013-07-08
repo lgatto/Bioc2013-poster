@@ -92,7 +92,7 @@
 
 \title[RforProteomics]{\huge Using \R and Bioconductor for proteomics data analysis}
 
-\author[Gatto et al.]{\large L. Gatto$^{*, 1}$, L.M. Breckels$^1$, S. Gibb$^2$, A. Christoforou$^1$ and K. S. Lilley$^1$}
+\author[Gatto et al.]{\large L. Gatto$^{*, 1}$, S. Gibb$^2$, L.M. Breckels$^1$, A. Christoforou$^1$ and K. S. Lilley$^1$}
 
 \institute[CCP]{
   \begin{small}
@@ -266,7 +266,7 @@ head(exprs(set), n = 3)
 xmlres <- rtandem(spectra.mgf, taxon = "yeast", 
                   taxonomy = "taxonomy.xml", 
                   default.parameters = "default-params.xml")
-## pr xmlres <- tandem(param)
+## or xmlres <- tandem(param)
 res <- GetResultsFromXML(xmlres)
 proteins <- GetProteins(res) ## data.table objects
 peptides <- GetPeptides(res) 
