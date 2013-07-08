@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr}
-%\VignetteIndexEntry{RforProteomics poster}
+%\VignetteIndexEntry{RforProteomics Bioc2013 poster}
 %\VignetteKeywords{bioinformatics, proteomics, mass spectrometry}
 
 \documentclass[final]{beamer} 
@@ -117,8 +117,7 @@ set.seed(1)
 %%$
 
 \begin{frame}[fragile]
-  \vspace{-100pt} 
-  
+
   \maketitle
 
   \begin{columns}
@@ -204,6 +203,7 @@ head(exprs(set), n = 3)
      and \Rpackage{isobar}, metabolic labelling techniques like $^{15}$N or SILAC still need to be developed. 
      
      \end{block}
+     \vfill
     \end{column}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -235,15 +235,17 @@ head(exprs(set), n = 3)
       \begin{block}{Peptide identification}
         \justifying 
         The recently released \Rpackage{rTANDEM} package encapsulates the \texttt{X!Tandem} \cite{tandem}
-        search engine in \R and uses the same XML-based parameter files as the native application. Result 
-        files can be directly parsed and mined in \R.   
+        search engine in \R and uses the same XML-based parameter files as the native application 
+        or dedicated \R parameter object. 
+        Result files can be directly parsed and mined in \R.          
 <<rtandem, eval = FALSE, tidy = FALSE>>=
 xmlres <- rtandem(spectra.mgf, taxon = "yeast", 
                   taxonomy = "taxonomy.xml", 
                   default.parameters = "default-params.xml")
+## pr xmlres <- tandem(param)
 res <- GetResultsFromXML(xmlres)
-proteins <- GetProteins(res)
-peptides <- GetPeptides(res)
+proteins <- GetProteins(res) ## data.table objects
+peptides <- GetPeptides(res) 
 @       
         A complete pipeline with support for identification is welcome at the cost of additional 
         development and maintenance time for developers. With support for \texttt{mzIdentML} files, 
@@ -251,7 +253,7 @@ peptides <- GetPeptides(res)
         facilitating the integration of \R based pipelines with existing tools.        
         
         \bigskip        
-        \textbf{Challenges} Better integration of identification and raw/quantitation data infrastructure.        
+        \textbf{Challenges} Better integration of identification and raw/quantitation data infrastructures.
 
       \end{block}
       %%\vfill
@@ -326,8 +328,9 @@ peptides <- GetPeptides(res)
             
         \end{thebibliography}        
       \end{block}
-      %% Funcing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      \vspace{3cm}
+      
+      %% Funding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %% \vspace{3cm}
       \begin{columns}
         \begin{column}{.15\textwidth}
           \includegraphics[width=\linewidth]{./figure/PRIME-XS_Logo}

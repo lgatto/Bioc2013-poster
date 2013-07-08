@@ -41,5 +41,6 @@ clean:
 	rm -f Bioc2013_poster.tex
 	rm -f *~
 	rm -f */*~
+	rm -f output*xml
 
 
