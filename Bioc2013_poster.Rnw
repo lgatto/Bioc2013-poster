@@ -32,6 +32,13 @@
 \usepackage{subcaption}
 
 \usepackage{tcolorbox}
+\usepackage{changepage} %% provided adjustwidth
+\usepackage{framed}
+
+\newenvironment{Leftbar}{%
+  \def\FrameCommand{\vrule width 3pt \hspace{20pt}}%
+  \MakeFramed {\advance\hsize-\width \FrameRestore}}%
+ {\endMakeFramed}
 
 \newcommand{\E}{\mathsf{E}}
 \newcommand{\VAR}{\mathsf{VAR}}
@@ -46,7 +53,8 @@
 \newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
 
 \newcommand{\challenge}[1]{
-       \begin{tcolorbox}[notitle,boxrule=0pt,colback=blue!10,colframe=blue!10]\textbf{Challenges}~{#1}
+       \begin{tcolorbox}[notitle,boxrule=0pt,colback=blue!10,colframe=blue!10]
+         \textbf{Challenges}~{#1}
        \end{tcolorbox}
 }
 
@@ -118,7 +126,7 @@ opts_chunk$set(fig.align = 'center',
                stop_on_error = 1L,
                comment = ':')
 options(replace.assign = TRUE, 
-        width = 55)
+        width = 50)
 
 suppressPackageStartupMessages(library("RforProteomics"))
 suppressPackageStartupMessages(library("foreach"))
@@ -143,12 +151,11 @@ set.seed(1)
      \begin{block}{Introduction}
        \justifying 
 
-       \R and Bioconductor have had a tremendous impact on the quality of genomics data analysis \cite{Gentleman2004},
-       demonstrating that extraction of relevant and biologically meaningful information from high-throughput data, 
-       requires investing time and effort in the exploration and analysis of the data.
+       %% \R and Bioconductor have had a tremendous impact on the quality of genomics data analysis \cite{Gentleman2004},
+       %% demonstrating that extraction of relevant and biologically meaningful information from high-throughput data, 
+       %% requires investing time and effort in the exploration and analysis of the data.
+       %% \bigskip
        
-       \bigskip
-
        Even well-known and respected leaders in proteomics agree that it lies 10 years behind genomics. 
        There are several valid reasons for this, including the chemical complexity of proteins, 
        the technical complexity of the instrumentation (in particular mass-spectrometry - MS) 
@@ -165,24 +172,25 @@ set.seed(1)
      \begin{block}{Working with raw data}
        \justifying 
        The proteomics community has developed a range of data standards and formats for MS data 
-       (the latest being \texttt{mzML}) to overcome the shortcomings 
-       of closed, binary vendor-specific formats. One of the main projects that implement parsers for the XML-based 
-       open formats is the \texttt{C++} proteowizard project \cite{Chambers2012}, which is interfaced by the 
-       \Rpackage{mzR} Bioconductor package using the \Rpackage{Rcpp} package.
-
+       (the latest being \texttt{mzML}) to overcome the shortcomings of closed, binary vendor-specific formats. 
+       \begin{Leftbar}
+         One of the main projects that implement parsers for the XML-based 
+         open formats is the \texttt{C++} proteowizard project \cite{Chambers2012}, which is interfaced by the 
+         \Rpackage{mzR} Bioconductor package using the \Rpackage{Rcpp} package.
+       
 <<mzR>>=
 library("mzR")
-fname <- dir(system.file(package="MSnbase",dir="extdata"), full.name=TRUE, pattern="mzXML$")
+fname <- dir(system.file(package="MSnbase", dir="extdata"), full.name=TRUE, pattern="mzXML$")
 ms <- openMSfile(fname)
 @
 
-The resulting \Robject{ms} object is a file handle that allows fast direct and random access to the 
-individual spectra. \Rpackage{mzR} is used by a variety of other packages like 
-\Rpackage{xcms}, \Rpackage{MSnbase}, \Rpackage{RMassBank} and \Rpackage{TargetSearch}.
-
+         The resulting \Robject{ms} object is a file handle that allows fast direct and random access to the 
+         individual spectra. \Rpackage{mzR} is used by a variety of other packages like 
+         \Rpackage{xcms}, \Rpackage{MSnbase}, \Rpackage{RMassBank} and \Rpackage{TargetSearch}.
+       \end{Leftbar}
        \bigskip
        
-         \challenge{Further improve support of raw MS data and develop the range of supported formats, 
+       \challenge{Further improve support of raw MS data and develop the range of supported formats, 
          in particular identification (\texttt{mzIdentML}) and quantitation (\texttt{mzQuantML}) formats.}
 
      \end{block}
@@ -192,7 +200,8 @@ individual spectra. \Rpackage{mzR} is used by a variety of other packages like
        \justifying 
        The same raw data file can be imported in a convenient higher level container and 
        directly processed, plotted, quantified and normalised with the \Rpackage{MSnbase} \cite{msnbase} software.
-<<msnbase, eval = FALSE>>= 
+       \begin{Leftbar}         
+<<msnbase, eval = FALSE>>=
 exp <- readMSData(fname, verbose = FALSE)
 plot(exp[["X3.1"]], full = TRUE, reporters = iTRAQ4)
 set <- quantify(exp, method = "trap", reporters = iTRAQ4, verbose = FALSE, parallel = TRUE)
@@ -214,12 +223,27 @@ head(exprs(set), n = 3)
     (top right) and distribution of the \textit{m/z} differences of all MS$^2$ spectra from the same 
     experiment, use as a peptide-spectrum matching quality assessment (bottom right).}
 \end{figure}
-
+       \end{Leftbar}
+       \bigskip
      \challenge{Although labelled MS$^2$ quantitation is well supported with \Rpackage{MSnbase} 
-     and \Rpackage{isobar}, metabolic labelling techniques like $^{15}$N or SILAC still need to be developed.}
+       and \Rpackage{isobar}, metabolic labelling techniques like $^{15}$N or SILAC still need to be supported.}
      
      \end{block}
      \vfill
+           %% Funding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %% \vspace{3cm}
+      \begin{columns}[T]
+        \begin{column}{.15\textwidth}
+          \includegraphics[width=\linewidth]{./figure/PRIME-XS_Logo}
+        \end{column}
+        \begin{column}{.85\textwidth}
+          \footnotesize This work has been supported by the PRIME-XS project, grant agreement number 262067, 
+          funded by the European Union 7$^{th}$ Framework Program. 
+          S.G. received funding from the German National Academic Foundation.
+        \end{column}
+      \end{columns}
+      %% Funding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     \end{column}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -231,37 +255,40 @@ head(exprs(set), n = 3)
       \begin{block}{Label-free quantitation}
         \justifying 
         Label-free quantitation is available in the \Rpackage{xcms} \cite{xcms} and \Rpackage{MALDIquant} \cite{maldiquant} packages. 
-        The latter provides a complete pipeline, including 
-        baseline subtraction, smoothing, peak detection and alignment using warping functions, 
-        handling of replicated measurements as well as allowing spectra with different resolutions.
-        \begin{figure}[h]
-          %% please find the script to create this figure at
-          %% https://github.com/sgibb/MALDIquantExamples/blob/master/createFigure1_color.R
-          \includegraphics[width=\textwidth]{./figure/mqplot2.pdf}
-          \label{fig:mq}
-          \caption{Illustration of the \Rpackage{MALDIquant} pipeline:
-            raw spectrum with estimate baseline (A);
-            variance-stabilized, smoothed, baseline-corrected spectrum with detected peaks (B);
-            fitted warping function for peak alignment (C); 
-            four unaligned peaks (D);
-            four aligned peaks (E); 
-            merged spectrum with discovered and labeled peaks (F).}
-        \end{figure}
-        
-        A complete pipeline for MS$^e$ data independent acquisition, including support for ion mobility separation 
-        is available in the \Rpackage{synapter} package \cite{synapter} that, among other, transfers identification between acquisitions 
-        to substantially reduce missing values. 
-        
-        \bigskip        
+        \begin{Leftbar}
+          The latter provides a complete pipeline, including 
+          baseline subtraction, smoothing, peak detection and alignment using warping functions, 
+          handling of replicated measurements as well as allowing spectra with different resolutions.
+          \begin{figure}[h]
+            %% please find the script to create this figure at
+            %% https://github.com/sgibb/MALDIquantExamples/blob/master/createFigure1_color.R
+            \includegraphics[width=\textwidth]{./figure/mqplot2.pdf}
+            \label{fig:mq}
+            \caption{Illustration of the \Rpackage{MALDIquant} pipeline:
+              raw spectrum with estimate baseline (A);
+              variance-stabilized, smoothed, baseline-corrected spectrum with detected peaks (B);
+              fitted warping function for peak alignment (C); 
+              four unaligned peaks (D);
+              four aligned peaks (E); 
+              merged spectrum with discovered and labeled peaks (F).}
+          \end{figure}
+          
+          A complete pipeline for MS$^e$ data independent acquisition, including support for ion mobility separation 
+          is available in the \Rpackage{synapter} package \cite{synapter} that, among other, transfers identification between acquisitions 
+          to substantially reduce missing values. 
+        \end{Leftbar}
+        \bigskip
         \challenge{Application and benchmarking of label-free pipeline on popular Thermo Orbitrap instruments.}
       \end{block}
       %%\vfill
       \begin{block}{Peptide identification}
         \justifying 
-        The recently released \Rpackage{rTANDEM} package encapsulates the \texttt{X!Tandem} \cite{tandem}
-        search engine in \R and uses the same XML-based parameter files as the native application 
-        or dedicated \R parameter object. 
-        Result files can be directly parsed and mined in \R.          
+        The recently released \Rpackage{rTANDEM} package encapsulates the \texttt{X!Tandem} \cite{tandem} search engine in \texttt{R}.
+        \begin{Leftbar}
+          It uses the same XML-based parameter files as the native application 
+          or dedicated \R parameter object. 
+          Result files can be directly parsed and mined in \R.          
+          
 <<rtandem, eval = FALSE, tidy = FALSE>>=
 xmlres <- rtandem(spectra.mgf, taxon = "yeast", 
                   taxonomy = "taxonomy.xml", 
@@ -271,12 +298,13 @@ res <- GetResultsFromXML(xmlres)
 proteins <- GetProteins(res) ## data.table objects
 peptides <- GetPeptides(res) 
 @       
-        A complete pipeline with support for identification is welcome at the cost of additional 
-        development and maintenance time for developers. With support for \texttt{mzIdentML} files, 
-        it will become possible to import identification data from most search engines, this 
-        facilitating the integration of \R based pipelines with existing tools.        
-        
-        \bigskip        
+                    
+          A complete pipeline with support for identification is welcome at the cost of additional 
+          development and maintenance time for developers. With support for \texttt{mzIdentML} files, 
+          it will become possible to import identification data from most search engines, this 
+          facilitating the integration of \R based pipelines with existing tools.        
+        \end{Leftbar}
+        \bigskip
         \challenge{Better integration of identification and raw/quantitation data infrastructures.}
 
       \end{block}
@@ -352,21 +380,7 @@ peptides <- GetPeptides(res)
             
         \end{thebibliography}        
       \end{block}
-      
-      %% Funding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      %% \vspace{3cm}
-      \begin{columns}[T]
-        \begin{column}{.15\textwidth}
-          \includegraphics[width=\linewidth]{./figure/PRIME-XS_Logo}
-        \end{column}
-        \begin{column}{.85\textwidth}
-          \small This work has been supported by the PRIME-XS project, grant agreement number 262067, 
-          funded by the European Union 7$^{th}$ Framework Program. 
-          S.G. received funding from the German National Academic Foundation.
-        \end{column}
-      \end{columns}
-      %% Funding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      
+            
       %% \vspace{2mm}
     \end{column}
   \end{columns}
