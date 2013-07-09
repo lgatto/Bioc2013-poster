@@ -53,10 +53,13 @@
 \newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
 
 \newcommand{\challenge}[1]{
-       \begin{tcolorbox}[notitle,boxrule=0pt,colback=blue!10,colframe=blue!10]
+       \begin{tcolorbox}[notitle,boxrule=1pt,colback=blue!10,colframe=blue!25]
          \textbf{Challenges}~{#1}
        \end{tcolorbox}
 }
+
+\newcommand{\secintro}[1]{
+       \begin{tcolorbox}[notitle,boxrule=0pt,colback=blue!10,colframe=blue!10]{#1}\end{tcolorbox}}
 
 
 %% colors
@@ -171,9 +174,10 @@ set.seed(1)
 
      \begin{block}{Working with raw data}
        \justifying 
-       The proteomics community has developed a range of data standards and formats for MS data 
-       (the latest being \texttt{mzML}) to overcome the shortcomings of closed, binary vendor-specific formats. 
-       \begin{Leftbar}
+       \secintro{The proteomics community has developed a range of data standards and formats for MS data 
+       (the latest being \texttt{mzML}) to overcome the shortcomings of closed, binary vendor-specific formats.}
+       
+       %% \begin{Leftbar}
          One of the main projects that implement parsers for the XML-based 
          open formats is the \texttt{C++} proteowizard project \cite{Chambers2012}, which is interfaced by the 
          \Rpackage{mzR} Bioconductor package using the \Rpackage{Rcpp} package.
@@ -187,7 +191,7 @@ ms <- openMSfile(fname)
          The resulting \Robject{ms} object is a file handle that allows fast direct and random access to the 
          individual spectra. \Rpackage{mzR} is used by a variety of other packages like 
          \Rpackage{xcms}, \Rpackage{MSnbase}, \Rpackage{RMassBank} and \Rpackage{TargetSearch}.
-       \end{Leftbar}
+       %% \end{Leftbar}
        \bigskip
        
        \challenge{Further improve support of raw MS data and develop the range of supported formats, 
@@ -198,9 +202,9 @@ ms <- openMSfile(fname)
      
      \begin{block}{Labelled quantitation}
        \justifying 
-       The same raw data file can be imported in a convenient higher level container and 
-       directly processed, plotted, quantified and normalised with the \Rpackage{MSnbase} \cite{msnbase} software.
-       \begin{Leftbar}         
+       \secintro{The same raw data file can be imported in a convenient higher level container and 
+       directly processed, plotted, quantified and normalised with the \Rpackage{MSnbase} \cite{msnbase} software.}
+       %% \begin{Leftbar}         
 <<msnbase, eval = FALSE>>=
 exp <- readMSData(fname, verbose = FALSE)
 plot(exp[["X3.1"]], full = TRUE, reporters = iTRAQ4)
@@ -223,7 +227,7 @@ head(exprs(set), n = 3)
     (top right) and distribution of the \textit{m/z} differences of all MS$^2$ spectra from the same 
     experiment, use as a peptide-spectrum matching quality assessment (bottom right).}
 \end{figure}
-       \end{Leftbar}
+       %% \end{Leftbar}
        \bigskip
      \challenge{Although labelled MS$^2$ quantitation is well supported with \Rpackage{MSnbase} 
        and \Rpackage{isobar}, metabolic labelling techniques like $^{15}$N or SILAC still need to be supported.}
@@ -254,8 +258,8 @@ head(exprs(set), n = 3)
       %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \begin{block}{Label-free quantitation}
         \justifying 
-        Label-free quantitation is available in the \Rpackage{xcms} \cite{xcms} and \Rpackage{MALDIquant} \cite{maldiquant} packages. 
-        \begin{Leftbar}
+        \secintro{Label-free quantitation is available in the \Rpackage{xcms} \cite{xcms} and \Rpackage{MALDIquant} \cite{maldiquant} packages.}
+        %% \begin{Leftbar}
           The latter provides a complete pipeline, including 
           baseline subtraction, smoothing, peak detection and alignment using warping functions, 
           handling of replicated measurements as well as allowing spectra with different resolutions.
@@ -276,15 +280,15 @@ head(exprs(set), n = 3)
           A complete pipeline for MS$^e$ data independent acquisition, including support for ion mobility separation 
           is available in the \Rpackage{synapter} package \cite{synapter} that, among other, transfers identification between acquisitions 
           to substantially reduce missing values. 
-        \end{Leftbar}
+        %% \end{Leftbar}
         \bigskip
         \challenge{Application and benchmarking of label-free pipeline on popular Thermo Orbitrap instruments.}
       \end{block}
       %%\vfill
       \begin{block}{Peptide identification}
         \justifying 
-        The recently released \Rpackage{rTANDEM} package encapsulates the \texttt{X!Tandem} \cite{tandem} search engine in \texttt{R}.
-        \begin{Leftbar}
+        \secintro{The recently released \Rpackage{rTANDEM} package encapsulates the \texttt{X!Tandem} \cite{tandem} search engine in \texttt{R}.}
+        %% \begin{Leftbar}
           It uses the same XML-based parameter files as the native application 
           or dedicated \R parameter object. 
           Result files can be directly parsed and mined in \R.          
@@ -303,7 +307,7 @@ peptides <- GetPeptides(res)
           development and maintenance time for developers. With support for \texttt{mzIdentML} files, 
           it will become possible to import identification data from most search engines, this 
           facilitating the integration of \R based pipelines with existing tools.        
-        \end{Leftbar}
+        %% \end{Leftbar}
         \bigskip
         \challenge{Better integration of identification and raw/quantitation data infrastructures.}
 
