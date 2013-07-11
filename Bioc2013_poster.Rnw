@@ -1,4 +1,4 @@
-%\VignetteEngine{knitr}
+g%\VignetteEngine{knitr}
 %\VignetteIndexEntry{RforProteomics Bioc2013 poster}
 %\VignetteKeywords{bioinformatics, proteomics, mass spectrometry}
 
@@ -59,7 +59,8 @@
 }
 
 \newcommand{\secintro}[1]{
-       \begin{tcolorbox}[notitle,boxrule=0pt,colback=blue!10,colframe=blue!10]{#1}\end{tcolorbox}}
+  \bigskip
+  \begin{tcolorbox}[notitle,boxrule=0pt,colback=blue!10,colframe=blue!10]{#1}\end{tcolorbox}}
 
 
 %% colors
@@ -160,7 +161,7 @@ set.seed(1)
        %% \bigskip
        
        Even well-known and respected leaders in proteomics agree that it lies 10 years behind genomics. 
-       There are several valid reasons for this, including the chemical complexity of proteins, 
+       There are several valid reasons for this, including the chemistry of proteins, 
        the technical complexity of the instrumentation (in particular mass-spectrometry - MS) 
        and the vast possibilities in the study of proteins. 
        An often overseen albeit essential component of this failure is arguably the software that is promoted inside the proteomics community. 
@@ -180,7 +181,7 @@ set.seed(1)
        %% \begin{Leftbar}
          One of the main projects that implement parsers for the XML-based 
          open formats is the \texttt{C++} proteowizard project \cite{Chambers2012}, which is interfaced by the 
-         \Rpackage{mzR} Bioconductor package using the \Rpackage{Rcpp} package.
+         \Rpackage{mzR} Bioconductor package using the \Rpackage{Rcpp} infrastructure.
        
 <<mzR>>=
 library("mzR")
@@ -188,13 +189,13 @@ fname <- dir(system.file(package="MSnbase", dir="extdata"), full.name=TRUE, patt
 ms <- openMSfile(fname)
 @
 
-         The resulting \Robject{ms} object is a file handle that allows fast direct and random access to the 
+         The resulting \Robject{ms} object is a file handle that allows fast random access to the 
          individual spectra. \Rpackage{mzR} is used by a variety of other packages like 
          \Rpackage{xcms}, \Rpackage{MSnbase}, \Rpackage{RMassBank} and \Rpackage{TargetSearch}.
        %% \end{Leftbar}
        \bigskip
        
-       \challenge{Further improve support of raw MS data and develop the range of supported formats, 
+       \challenge{Improved support of raw MS data and develop the range of supported formats, 
          in particular identification (\texttt{mzIdentML}) and quantitation (\texttt{mzQuantML}) formats.}
 
      \end{block}
@@ -222,8 +223,8 @@ head(exprs(set), n = 3)
     \includegraphics[width=\linewidth]{./figure/plotmzdelta.pdf}
   \end{subfigure}
   \label{fig:msnbase} 
-  \caption{MS$^2$ spectrum of an iTRAQ 4-plex experiment showing the 4 isobaric reporter ions, 
-    as produced by \Rfunction{plot} above (left). Peptides of interesting from a spiked-in experiment 
+  \caption{MS$^2$ spectrum of an iTRAQ 4-plex experiment highlighting the 4 isobaric reporter ions, 
+    as produced by \Rfunction{plot} above (left). Peptides of interest from a spiked-in experiment 
     (top right) and distribution of the \textit{m/z} differences of all MS$^2$ spectra from the same 
     experiment, use as a peptide-spectrum matching quality assessment (bottom right).}
 \end{figure}
@@ -258,7 +259,8 @@ head(exprs(set), n = 3)
       %% next block %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \begin{block}{Label-free quantitation}
         \justifying 
-        \secintro{Label-free quantitation is available in the \Rpackage{xcms} \cite{xcms} and \Rpackage{MALDIquant} \cite{maldiquant} packages.}
+        \secintro{Support for data dependent label-free quantitation is available, among others, in the 
+          \Rpackage{xcms} \cite{xcms} and \Rpackage{MALDIquant} \cite{maldiquant} packages.}
         %% \begin{Leftbar}
           The latter provides a complete pipeline, including 
           baseline subtraction, smoothing, peak detection and alignment using warping functions, 
@@ -270,19 +272,19 @@ head(exprs(set), n = 3)
             \label{fig:mq}
             \caption{Illustration of the \Rpackage{MALDIquant} pipeline:
               raw spectrum with estimate baseline (A);
-              variance-stabilized, smoothed, baseline-corrected spectrum with detected peaks (B);
+              variance-stabilised, smoothed, baseline-corrected spectrum with detected peaks (B);
               fitted warping function for peak alignment (C); 
               four unaligned peaks (D);
               four aligned peaks (E); 
-              merged spectrum with discovered and labeled peaks (F).}
+              merged spectrum with discovered and labelled peaks (F).}
           \end{figure}
           
-          A complete pipeline for MS$^e$ data independent acquisition, including support for ion mobility separation 
-          is available in the \Rpackage{synapter} package \cite{synapter} that, among other, transfers identification between acquisitions 
-          to substantially reduce missing values. 
+          A complete pipeline for MS$^E$ data independent acquisition, including support for ion mobility separation 
+          is available in the \Rpackage{synapter} package \cite{synapter} that, among other features, 
+          transfers identification between acquisitions to substantially reduce missing values.           
         %% \end{Leftbar}
         \bigskip
-        \challenge{Application and benchmarking of label-free pipeline on popular Thermo Orbitrap instruments.}
+        \challenge{Application and bench-marking of label-free pipelines on popular Thermo Orbitrap instruments.}
       \end{block}
       %%\vfill
       \begin{block}{Peptide identification}
@@ -303,10 +305,11 @@ proteins <- GetProteins(res) ## data.table objects
 peptides <- GetPeptides(res) 
 @       
                     
-          A complete pipeline with support for identification is welcome at the cost of additional 
-          development and maintenance time for developers. With support for \texttt{mzIdentML} files, 
-          it will become possible to import identification data from most search engines, this 
-          facilitating the integration of \R based pipelines with existing tools.        
+          A complete pipeline for peptide identification is welcome. 
+          With support for \texttt{mzIdentML} files, 
+          it will become possible to import identification data from most search engines, thus 
+          allowing comparison of different tools and  
+          facilitating the integration of \R based pipelines with existing third party tools.        
         %% \end{Leftbar}
         \bigskip
         \challenge{Better integration of identification and raw/quantitation data infrastructures.}
