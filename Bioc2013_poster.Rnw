@@ -1,4 +1,4 @@
-g%\VignetteEngine{knitr}
+%\VignetteEngine{knitr}
 %\VignetteIndexEntry{RforProteomics Bioc2013 poster}
 %\VignetteKeywords{bioinformatics, proteomics, mass spectrometry}
 
