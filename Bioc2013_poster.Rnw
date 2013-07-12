@@ -226,7 +226,7 @@ head(exprs(set), n = 3)
   \caption{MS$^2$ spectrum of an iTRAQ 4-plex experiment highlighting the 4 isobaric reporter ions, 
     as produced by \Rfunction{plot} above (left). Peptides of interest from a spiked-in experiment 
     (top right) and distribution of the \textit{m/z} differences of all MS$^2$ spectra from the same 
-    experiment, use as a peptide-spectrum matching quality assessment (bottom right).}
+    experiment, used as a peptide-spectrum matching quality assessment (bottom right).}
 \end{figure}
        %% \end{Leftbar}
        \bigskip
@@ -321,8 +321,8 @@ peptides <- GetPeptides(res)
       \begin{block}{Conclusions and perspectives}
        \justifying 
 
-       The flexibility of the \R environment and the breath of available packages is sometimes 
-       daunting for newcomers and introductory points of entry are welcome.  
+       The flexibility of the \R environment and the breadth of available packages is sometimes 
+       daunting for newcomers and dedicated introductory material is welcome.  
        The \Rpackage{RforProteomics} package [\url{https://github.com/lgatto/RforProteomics}]
        %% (and the proteomics workflow on the Bioconductor homepage) 
        ought to assume such a role. For this, \Rpackage{RforProteomics} should be a collaborative project 
